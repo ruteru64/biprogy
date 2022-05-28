@@ -31,8 +31,8 @@ class Meeting(models.Model):
     # TextField 空，nullであることを許容
     topic3 = models.TextField(null=True, blank=True)
 
-    def __str__(self):  # Meetingのdayのテキストを返す
-        return self.day
+    # def __str__(self):  # Meetingのdayのテキストを返す
+    #     return self.partner_id
 
 # 話題のモデル
 

@@ -8,12 +8,12 @@
    <p>営業先を選んでください</p>
     {% for partner in partners %}
     <div>
-      <a class="btn btn-default" href="{% url 'topic_deck' user_id=user_id partner_id=partner.pk %}">{{ partner.name }}
+      <a class="btn btn-default" href="{% url 'topic_deck' user_id=user.id partner_id=partner.pk %}">{{ partner.name }}
          : {{ partner.belongs }}</a>
     </div>
     {% endfor %}
 
-    <a href="{% url 'add_partner' user_id=user_id %}">クライアント追加</a>
+    <a href="{% url 'add_partner' user_id=user.id %}">クライアント追加</a>
 
    <a href="{% url 'logout' %}">ログアウトする</a>
    {% else %}

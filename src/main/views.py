@@ -17,13 +17,19 @@ from .models import Topic, Meeting, Partner
 # Create your views here.
 
 
-class Index(TemplateView):
-    template_name = 'index.html'
+# class Index(TemplateView):
+#     template_name = 'index.html'
+def index(request):
+    try:
+        id = request.session['user_id']
+        partners = Partner.objects.filter(user_id=id)
+        user = User.objects.get(id=id)
+        return render(request, 'index.html', {'isLogin': 1, 'partners': partners, 'user': user})
+    except:
+        return render(request, 'index.html', {'isLogin': 0})
+        # index = Index.as_view()
 
-
-index = Index.as_view()
-
-# アカウント作成
+        # アカウント作成
 
 
 class Create_account(CreateView):
@@ -62,6 +68,7 @@ class Account_login(View):
             #     print(partner.pk, partner.name)
             # print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             login(request, user)
+            request.session['user_id'] = user.id
             print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             return redirect('/')
         return render(request, 'login.html', {'form': form, })
@@ -95,7 +102,7 @@ def add_partner(request, user_id):
             partner.user_id = user_id
             partner.save()
             # return redirect('select_partner', user_id = partner.user_id)
-            return redirect('index.html', user_id=partner.user_id)
+            return redirect('/')
     else:
         form.PartnerForm()
     return render(request, 'add_partner.html', {'form': form})
