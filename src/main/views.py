@@ -72,6 +72,7 @@ account_login = Account_login.as_view()
 
 def select_partner(request, user_id):
     # partners = Partner.objects.filter(user_id = user_id)
+    user_id = request.GET['userid']
     partners = Partner.objects.filter(pk=user_id)
     return render(request, 'select_partner.html', {'user_id': user_id, 'partners': partners})
 
