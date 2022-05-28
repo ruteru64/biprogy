@@ -7,18 +7,13 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 
 from .word2vec import Word2Vec
-# from ..hackSite import urls
 
 from .forms import UserCreateForm, LoginForm, PartnerForm, MeetingForm
 from .models import Topic, Meeting, Partner
 
-# from ... Word2Vec.word2vec import Word2Vec
-
 # Create your views here.
 
 
-# class Index(TemplateView):
-#     template_name = 'index.html'
 def index(request):
     try:
         id = request.session['user_id']
@@ -63,13 +58,8 @@ class Account_login(View):
             username = form.cleaned_data.get('username')
             user = User.objects.get(username=username)
             partners = Partner.objects.filter(user_id=user.id)
-            # redirect('/', {'user_id': user.id, 'partners': partners})
-            # for partner in partners:
-            #     print(partner.pk, partner.name)
-            # print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             login(request, user)
             request.session['user_id'] = user.id
-            print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             return redirect('/')
         return render(request, 'login.html', {'form': form, })
 
@@ -80,19 +70,10 @@ class Account_login(View):
 
 account_login = Account_login.as_view()
 
-# 営業先の一覧を表示
-
-
-# def select_partner(request, user_id):
-#     # partners = Partner.objects.filter(user_id = user_id)
-#     partners = Partner.objects.filter(pk=user_id)
-#     return render(request, 'select_partner.html', {'user_id': user_id, 'partners': partners})
-
 # 営業先を追加
 
 
 def add_partner(request, user_id):
-    # user_id = request.GET['userid']
     if request.method == "POST":  # POSTrequestなら
         # print("test")
         form = PartnerForm(request.POST)  # formの内容
@@ -101,7 +82,6 @@ def add_partner(request, user_id):
             partner = form.save(commit=False)
             partner.user_id = user_id
             partner.save()
-            # return redirect('select_partner', user_id = partner.user_id)
             return redirect('/')
     else:
         form = PartnerForm()
@@ -111,32 +91,16 @@ def add_partner(request, user_id):
 
 
 def topic_deck(request, user_id, partner_id):
-    # user_id = request.GET['user_id']
-    # partner_id = request.GET['partnerid']
-    # partners = Partner.objects.filter(user_id = user_id)
     meeting = Meeting.objects.filter(
         partner_id=partner_id).order_by('-day').first()  # 指定営業先に該当するMeetingのデータを抽出
 
     if meeting:
-
-        # print(meeting.topic1)
 
         topics = []
 
         topics.append(meeting.topic1)
         topics.append(meeting.topic2)
         topics.append(meeting.topic3)
-
-        print(topics)
-
-        # print(meetings)
-
-        # topics = []
-
-        # for meeting in meetings:  # Meetingのデータごとに
-        #     # topics += Topic.objects.filter(meeting_id = meetings.id).topic # 該当するTopicを抽出し，話題のリストを作る
-        #     meetings = Meeting.objects.filter(
-        #         pk=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
 
         proposed_topics = topics  # mlしたくないからそのまま出すように
 
@@ -149,10 +113,8 @@ def topic_deck(request, user_id, partner_id):
 
 
 def post_topic(request, user_id, partner_id):
-    # user = User.objects.get(id=user_id)
 
     if request.method == "POST":  # POSTrequestなら
-        # partner_id = request.GET['partnerid']
         form = MeetingForm(request.POST)  # formの内容
 
         if form.is_valid():  # 記入内容が正常なら
@@ -162,28 +124,23 @@ def post_topic(request, user_id, partner_id):
             meeting.day = timezone.now()
             meeting.save()
 
-            print(meeting.id)
+            # print(meeting.id)
 
             # Topicを登録
             topic1 = meeting.topic1
-            # Topic.objects.create(meeting_id = meeting.id, topic = topic1)
             Topic.objects.create(
                 meeting_id=meeting.id, partner_id=partner_id, topic=topic1)
 
             topic2 = meeting.topic2
             if topic2:
-                # Topic.object.create(meeting_id = meeting.id,  topic = topic2)
                 Topic.objects.create(
                     meeting_id=meeting.id, partner_id=partner_id, topic=topic2)
 
             topic3 = meeting.topic3
             if topic3:
-                # Topic.objects.create(meeting_id = meeting.id,  topic = topic3)
                 Topic.objects.create(
                     meeting_id=meeting.id, partner_id=partner_id, topic=topic3)
 
-            # return redirect('topic_deck.html', patner_id=meeting.patrner_id)
-            # return render(request, 'topic_deck.html', {"user_id": user_id, "partner_id": partner_id})
             return redirect('topic_deck', user_id=user_id, partner_id=partner_id)
     else:
         form = MeetingForm()
