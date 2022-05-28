@@ -63,7 +63,7 @@ class Account_login(View):
             # print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             login(request, user)
             print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
-            return render(request, 'index.html', {'user_id': user.id, 'partners': partners})
+            return redirect('/')
         return render(request, 'login.html', {'form': form, })
 
     def get(self, request, *args, **kwargs):
