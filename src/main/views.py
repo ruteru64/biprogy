@@ -23,7 +23,7 @@ class Index(TemplateView):
 
 index = Index.as_view()
 
-#アカウント作成
+# アカウント作成
 
 
 class Create_account(CreateView):
@@ -31,9 +31,9 @@ class Create_account(CreateView):
         form = UserCreateForm(data=request.POST)
         if form.is_valid():
             form.save()
-            #フォームから'username'を読み取る
+            # フォームから'username'を読み取る
             name = form.cleaned_data.get('username')
-            #フォームから'password1'を読み取る
+            # フォームから'password1'を読み取る
             password = form.cleaned_data.get('password1')
             user = authenticate(username=name, password=password)
             login(request, user)
@@ -47,7 +47,7 @@ class Create_account(CreateView):
 
 create_account = Create_account.as_view()
 
-#ログイン機能
+# ログイン機能
 
 
 class Account_login(View):
@@ -56,8 +56,14 @@ class Account_login(View):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             user = User.objects.get(username=username)
+            partners = Partner.objects.filter(user_id=user.id)
+            # redirect('/', {'user_id': user.id, 'partners': partners})
+            for partner in partners:
+                print(partner.pk, partner.name)
+            # print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             login(request, user)
-            return redirect('/')
+            print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
+            return render(request, 'index.html', {'user_id': user.id, 'partners': partners})
         return render(request, 'login.html', {'form': form, })
 
     def get(self, request, *args, **kwargs):
@@ -70,16 +76,16 @@ account_login = Account_login.as_view()
 # 営業先の一覧を表示
 
 
-def select_partner(request, user_id):
-    # partners = Partner.objects.filter(user_id = user_id)
-    user_id = request.GET['userid']
-    partners = Partner.objects.filter(pk=user_id)
-    return render(request, 'select_partner.html', {'user_id': user_id, 'partners': partners})
+# def select_partner(request, user_id):
+#     # partners = Partner.objects.filter(user_id = user_id)
+#     partners = Partner.objects.filter(pk=user_id)
+#     return render(request, 'select_partner.html', {'user_id': user_id, 'partners': partners})
 
 # 営業先を追加
 
 
-def add_partner(request, user_id):
+def add_partner(request):
+    user_id = request.GET['userid']
     if request.method == "POST":  # POSTrequestなら
         # print("test")
         form = PartnerForm(request.POST)  # formの内容
@@ -98,10 +104,12 @@ def add_partner(request, user_id):
 
 
 def topic_deck(request, user_id, partner_id):
+    # user_id = request.GET['user_id']
+    # partner_id = request.GET['partnerid']
     # partners = Partner.objects.filter(user_id = user_id)
     # meetings = Meeting.objects.filter(partner_id = partner_id) # 指定営業先に該当するMeetingのデータを抽出
     meetings = Meeting.objects.filter(
-        pk=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
+        name=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
 
     topics = []
 
@@ -119,8 +127,9 @@ def topic_deck(request, user_id, partner_id):
 # ミーティングで出た話題が入力されたものをデータベースに登録するview partner_idが必要
 
 
-def post_topic(request, partner_id):
+def post_topic(request):
     if request.method == "POST":  # POSTrequestなら
+        partner_id = request.GET['partnerid']
         form = MeetingForm(request.POST)  # formの内容
 
         if form.is_valid():  # 記入内容が正常なら
@@ -151,3 +160,6 @@ def post_topic(request, partner_id):
             form = MeetingForm()
 
         return render(request, 'topic_post.html', {'form': form})
+
+
+# def add_partner()
