@@ -1,0 +1,12 @@
+<html>
+
+<body>
+    <p>話題一覧</p>
+    {% for topic in proposed_topics %}
+    <div>
+        <p>{{ topic.topic }}</p>
+    </div>
+    {% endfor %}
+</body>
+
+</html>

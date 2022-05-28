@@ -58,11 +58,11 @@ class Account_login(View):
             user = User.objects.get(username=username)
             partners = Partner.objects.filter(user_id=user.id)
             # redirect('/', {'user_id': user.id, 'partners': partners})
-            for partner in partners:
-                print(partner.pk, partner.name)
+            # for partner in partners:
+            #     print(partner.pk, partner.name)
             # print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             login(request, user)
-            print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
+            # print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             return render(request, 'index.html', {'user_id': user.id, 'partners': partners})
         return render(request, 'login.html', {'form': form, })
 
@@ -84,8 +84,8 @@ account_login = Account_login.as_view()
 # 営業先を追加
 
 
-def add_partner(request):
-    user_id = request.GET['userid']
+def add_partner(request, user_id):
+    # user_id = request.GET['userid']
     if request.method == "POST":  # POSTrequestなら
         # print("test")
         form = PartnerForm(request.POST)  # formの内容
@@ -95,7 +95,7 @@ def add_partner(request):
             partner.user_id = user_id
             partner.save()
             # return redirect('select_partner', user_id = partner.user_id)
-            return redirect('select_partner', user_id=partner.pk)
+            return redirect('index.html', user_id=partner.user_id)
     else:
         form.PartnerForm()
     return render(request, 'add_partner.html', {'form': form})
@@ -109,7 +109,9 @@ def topic_deck(request, user_id, partner_id):
     # partners = Partner.objects.filter(user_id = user_id)
     # meetings = Meeting.objects.filter(partner_id = partner_id) # 指定営業先に該当するMeetingのデータを抽出
     meetings = Meeting.objects.filter(
-        name=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
+        partner_id=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
+
+    print(meetings)
 
     topics = []
 
@@ -160,6 +162,3 @@ def post_topic(request):
             form = MeetingForm()
 
         return render(request, 'topic_post.html', {'form': form})
-
-
-# def add_partner()

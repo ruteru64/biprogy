@@ -39,6 +39,7 @@ class Meeting(models.Model):
 
 class Topic(models.Model):
     meeting_id = models.IntegerField()  # int型 ミーティングのid
+    partner_id = models.IntegerField()  # model,partnerのidによる
     topic = models.TextField()  # TextField 話題
 
     def __str__(self):  # topicのtopicのテキストを返す
