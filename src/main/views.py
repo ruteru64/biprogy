@@ -151,17 +151,20 @@ def post_topic(request):
             # Topicを登録
             topic1 = meeting.topic1
             # Topic.object.create(meeting_id = meeting.id, topic = topic1)
-            Topic.object.create(pk=meeting.id, topic=topic1)
+            Topic.object.create(
+                pk=meeting.id, partner_id=partner_id, topic=topic1)
 
             topic2 = meeting.topic2
             if topic2 != None:
                 # Topic.object.create(meeting_id = meeting.id,  topic = topic2)
-                Topic.object.create(pk=meeting.id,  topic=topic2)
+                Topic.object.create(
+                    pk=meeting.id, partner_id=partner_id, topic=topic2)
 
             topic3 = meeting.topic3
             if topic3 != None:
                 # Topic.object.create(meeting_id = meeting.id,  topic = topic3)
-                Topic.object.create(pk=meeting.id,  topic=topic3)
+                Topic.object.create(
+                    pk=meeting.id, partner_id=partner_id, topic=topic3)
 
             # return redirect('topic_deck.html', patner_id = meeting.patrner_id)
             return redirect('topic_deck.html', patner_id=meeting.pk)
