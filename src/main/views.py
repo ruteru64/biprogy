@@ -12,7 +12,7 @@ from .word2vec import Word2Vec
 from .forms import UserCreateForm, LoginForm, PartnerForm, MeetingForm
 from .models import Topic, Meeting, Partner
 
-#from ... Word2Vec.word2vec import Word2Vec
+# from ... Word2Vec.word2vec import Word2Vec
 
 # Create your views here.
 
@@ -62,8 +62,8 @@ class Account_login(View):
             #     print(partner.pk, partner.name)
             # print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
             login(request, user)
-            # print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
-            return render(request, 'index.html', {'user_id': user.id, 'partners': partners})
+            print("あああああああああああああああああああああああああああああああああああああああああああああああああああああ")
+            return redirect('/')
         return render(request, 'login.html', {'form': form, })
 
     def get(self, request, *args, **kwargs):
