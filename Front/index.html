@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <title>Template</title>
+  <script src='library/p5.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
+  <script src="p5.play.js"></script>
+  <script src='createTopics.js'></script>
+</head>
+
+<body>
+  <div id="header">
+    <div id="header-container">
+      <div class="logo"><img class="logo-image" src="img/title.png"></div>
+    </div>
+  </div>
+  <div class="header-right">今回のミーティングのキーワード
+    <input type="text" id="sampleUserInput">
+    <input type="button" value="追加" onclick="AddStringToTextarea();">
+  </div>
+</body>
+
+</html>
