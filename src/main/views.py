@@ -114,18 +114,27 @@ def topic_deck(request, user_id, partner_id):
     # user_id = request.GET['user_id']
     # partner_id = request.GET['partnerid']
     # partners = Partner.objects.filter(user_id = user_id)
-    # meetings = Meeting.objects.filter(partner_id = partner_id) # 指定営業先に該当するMeetingのデータを抽出
-    meetings = Meeting.objects.filter(
-        partner_id=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
+    meeting = Meeting.objects.filter(
+        partner_id=partner_id).order_by('-day').first()  # 指定営業先に該当するMeetingのデータを抽出
 
-    print(meetings)
+    # print(meeting.topic1)
 
     topics = []
 
-    for meeting in meetings:  # Meetingのデータごとに
-        # topics += Topic.objects.filter(meeting_id = meetings.id).topic # 該当するTopicを抽出し，話題のリストを作る
-        meetings = Meeting.objects.filter(
-            pk=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
+    topics.append(meeting.topic1)
+    topics.append(meeting.topic2)
+    topics.append(meeting.topic3)
+
+    print(topics)
+
+    # print(meetings)
+
+    # topics = []
+
+    # for meeting in meetings:  # Meetingのデータごとに
+    #     # topics += Topic.objects.filter(meeting_id = meetings.id).topic # 該当するTopicを抽出し，話題のリストを作る
+    #     meetings = Meeting.objects.filter(
+    #         pk=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
 
     proposed_topics = topics  # mlしたくないからそのまま出すように
 
