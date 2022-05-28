@@ -104,7 +104,7 @@ def add_partner(request, user_id):
             # return redirect('select_partner', user_id = partner.user_id)
             return redirect('/')
     else:
-        form.PartnerForm()
+        form = PartnerForm()
     return render(request, 'add_partner.html', {'form': form})
 
 # 指定された営業先の話題デッキを表示するview 引数にuser_idとpartner_idが必要
@@ -117,37 +117,42 @@ def topic_deck(request, user_id, partner_id):
     meeting = Meeting.objects.filter(
         partner_id=partner_id).order_by('-day').first()  # 指定営業先に該当するMeetingのデータを抽出
 
-    # print(meeting.topic1)
+    if meeting:
 
-    topics = []
+        # print(meeting.topic1)
 
-    topics.append(meeting.topic1)
-    topics.append(meeting.topic2)
-    topics.append(meeting.topic3)
+        topics = []
 
-    print(topics)
+        topics.append(meeting.topic1)
+        topics.append(meeting.topic2)
+        topics.append(meeting.topic3)
 
-    # print(meetings)
+        print(topics)
 
-    # topics = []
+        # print(meetings)
 
-    # for meeting in meetings:  # Meetingのデータごとに
-    #     # topics += Topic.objects.filter(meeting_id = meetings.id).topic # 該当するTopicを抽出し，話題のリストを作る
-    #     meetings = Meeting.objects.filter(
-    #         pk=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
+        # topics = []
 
-    proposed_topics = topics  # mlしたくないからそのまま出すように
+        # for meeting in meetings:  # Meetingのデータごとに
+        #     # topics += Topic.objects.filter(meeting_id = meetings.id).topic # 該当するTopicを抽出し，話題のリストを作る
+        #     meetings = Meeting.objects.filter(
+        #         pk=partner_id)  # 指定営業先に該当するMeetingのデータを抽出
 
-    # proposed_topics = word2vec.topics(topics) # 抽出したtopicを機械学習にかけて，提案された話題リスト
+        proposed_topics = topics  # mlしたくないからそのまま出すように
 
-    return render(request, 'topic_deck.html', {'proposed_topics': proposed_topics})
+        # proposed_topics = word2vec.topics(topics) # 抽出したtopicを機械学習にかけて，提案された話題リスト
 
-# ミーティングで出た話題が入力されたものをデータベースに登録するview partner_idが必要
+        return render(request, 'topic_deck.html', {'proposed_topics': proposed_topics, "user_id": user_id, "partner_id": partner_id})
+    else:
+        return render(request, 'topic_deck.html', {"user_id": user_id, "partner_id": partner_id})
+        # ミーティングで出た話題が入力されたものをデータベースに登録するview partner_idが必要
 
 
-def post_topic(request):
+def post_topic(request, user_id, partner_id):
+    # user = User.objects.get(id=user_id)
+
     if request.method == "POST":  # POSTrequestなら
-        partner_id = request.GET['partnerid']
+        # partner_id = request.GET['partnerid']
         form = MeetingForm(request.POST)  # formの内容
 
         if form.is_valid():  # 記入内容が正常なら
@@ -157,27 +162,30 @@ def post_topic(request):
             meeting.day = timezone.now()
             meeting.save()
 
+            print(meeting.id)
+
             # Topicを登録
             topic1 = meeting.topic1
-            # Topic.object.create(meeting_id = meeting.id, topic = topic1)
-            Topic.object.create(
-                pk=meeting.id, partner_id=partner_id, topic=topic1)
+            # Topic.objects.create(meeting_id = meeting.id, topic = topic1)
+            Topic.objects.create(
+                meeting_id=meeting.id, partner_id=partner_id, topic=topic1)
 
             topic2 = meeting.topic2
-            if topic2 != None:
+            if topic2:
                 # Topic.object.create(meeting_id = meeting.id,  topic = topic2)
-                Topic.object.create(
-                    pk=meeting.id, partner_id=partner_id, topic=topic2)
+                Topic.objects.create(
+                    meeting_id=meeting.id, partner_id=partner_id, topic=topic2)
 
             topic3 = meeting.topic3
-            if topic3 != None:
-                # Topic.object.create(meeting_id = meeting.id,  topic = topic3)
-                Topic.object.create(
-                    pk=meeting.id, partner_id=partner_id, topic=topic3)
+            if topic3:
+                # Topic.objects.create(meeting_id = meeting.id,  topic = topic3)
+                Topic.objects.create(
+                    meeting_id=meeting.id, partner_id=partner_id, topic=topic3)
 
-            # return redirect('topic_deck.html', patner_id = meeting.patrner_id)
-            return redirect('topic_deck.html', patner_id=meeting.pk)
-        else:
-            form = MeetingForm()
+            # return redirect('topic_deck.html', patner_id=meeting.patrner_id)
+            # return render(request, 'topic_deck.html', {"user_id": user_id, "partner_id": partner_id})
+            return redirect('topic_deck', user_id=user_id, partner_id=partner_id)
+    else:
+        form = MeetingForm()
 
-        return render(request, 'topic_post.html', {'form': form})
+    return render(request, 'post_topic.html', {'form': form})

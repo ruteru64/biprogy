@@ -2,12 +2,16 @@
 
 <body>
     <p>話題一覧</p>
-    {% for topic in proposed_topics %}
-    <div>
-        <p>{{ topic }}</p>
-    </div>
+    {% if proposed_topics %}
+        {% for topic in proposed_topics %}
+        <div>
+            <p>{{ topic }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
 
-    {% endfor %}
+
+    <a href="{% url 'post_topic' user_id=user.id partner_id=partner_id %}">話題追加</a>
 </body>
 
 </html>
