@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <p>営業先を選んでください</p>
+        {% for partner in partners %}
+        <div>
+            <a class="btn btn-default" href="{% url 'topic_deck' user_id = pk partner_id = partner.pk %}">{{ patrner.name }} : {{ partner.belongs }}</a>
+        </div>
+        {% endfor %}
+    </body>
+</html>
