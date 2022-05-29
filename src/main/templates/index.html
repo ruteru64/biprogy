@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+<<<<<<< HEAD
 
 <head>
   <meta charset="UTF-8">
@@ -30,6 +31,20 @@
       : {{ partner.belongs }}</button></a>
   </div>
   {% endfor %}
+=======
+<bodhandy>
+   {% if user.id %}
+   <p>ログインしました．</p>
+   <p>こんにちは，{{ user.username }}さん</p>
+   <p>{{ user.id }}</p>
+   <p>営業先を選んでください</p>
+   {% for partner in partners %}
+   <div>
+      <a class="btn btn-default" href="{% url 'test' user_id=user.id partner_id=partner.pk %}">{{ partner.name }}
+         : {{ partner.belongs }}</a>
+   </div>
+   {% endfor %}
+>>>>>>> 05bdc7b6a574b5fafd71d5a1f54c6dd2c9c76634
 
   <a href="{% url 'add_partner' user_id=user.id %}"><button class="button">クライアント追加</button></a>
 
