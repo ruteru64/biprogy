@@ -1,5 +1,37 @@
 <!DOCTYPE html>
 <html lang="ja">
+<<<<<<< HEAD
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <title>オレのAIの話題提示が最強すぎる件</title>
+</head>
+
+
+  <div id="header">
+    <div id="header-container">
+      <a href="#"><div class="logo"><img class="logo-image" src="{% static 'img/title.png' %}"></div></a>
+    </div>
+  </div>
+  <body>
+  <div class="leftnav">
+  </div>
+  <div class="mainarea">
+  {% if user.id %}
+  <p>ログインしました．</p>
+  <p>こんにちは，{{ user.username }}さん</p>
+  <p>{{ user.id }}</p>
+  <p>営業先を選んでください</p>
+  {% for partner in partners %}
+  <div>
+    <a class="btn btn-default" href="{% url 'topic_deck' user_id=user.id partner_id=partner.pk %}"><button class="button">{{ partner.name }}
+      : {{ partner.belongs }}</button></a>
+  </div>
+  {% endfor %}
+=======
 <bodhandy>
    {% if user.id %}
    <p>ログインしました．</p>
@@ -12,14 +44,22 @@
          : {{ partner.belongs }}</a>
    </div>
    {% endfor %}
+>>>>>>> 05bdc7b6a574b5fafd71d5a1f54c6dd2c9c76634
 
-    <a href="{% url 'add_partner' user_id=user.id %}">クライアント追加</a>
+  <a href="{% url 'add_partner' user_id=user.id %}"><button class="button">クライアント追加</button></a>
 
-   <a href="{% url 'logout' %}">ログアウトする</a>
-   {% else %}
-   <a href="{% url 'login' %}">ログイン</a>
-   <a href="{% url 'create_account' %}">アカウント作成</a>
-   {% endif %}
-</bodhand y>
+  <a href="{% url 'logout' %}"><button class="button">ログアウトする</button></a>
+  {% else %}
+  <a href="{% url 'login' %}"><button class="button">ログイン</button></a>
+  <a href="{% url 'create_account' %}"><button class="button">アカウント作成</button></a>
+  {% endif %}
+  </div>
+  <div class="rightnav">
+  </div>
+  <div id="footer">
+    <img class="logo-image" src="{% static 'img/title.png' %}"><br>
+    Copyright©2022 Intelligent Create Topics Inc. All Rights Reserved
+  </div>
+</body>
 
 </html>

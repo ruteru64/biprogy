@@ -1,7 +1,25 @@
+<!DOCTYPE html>
 <html lang="ja">
 
-<body>
-    <p>話題一覧</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <title>オレのAIの話題提示が最強すぎる件</title>
+</head>
+
+
+  <div id="header">
+    <div id="header-container">
+      <div class="logo"><img class="logo-image" src="{% static 'img/title.png' %}"></div>
+    </div>
+  </div>
+  <body>
+  <div class="leftnav">
+  </div>
+  <div class="mainarea">
+    <h2>話題一覧</h2>
     {% if proposed_topics %}
         {% for topic in proposed_topics %}
             {% if topic %}
@@ -13,11 +31,18 @@
     {% endif %}
 
 
-    <a href="{% url 'post_topic' user_id=user.id partner_id=partner_id %}">話題追加</a>
+    <a href="{% url 'post_topic' user_id=user.id partner_id=partner_id %}"><button class="button">話題追加</button></a>
     <!-- <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
         <button type="submit">戻る</button>
     </form> -->
-</body>
+  </div>
+  <div class="rightnav">
+  </div>
+  <div id="footer">
+    <img class="logo-image" src="{% static 'img/title.png' %}"><br>
+    Copyright©2022 Intelligent Create Topics Inc. All Rights Reserved
+  </div>
+  </body>
 
-</html>
+  </html>
