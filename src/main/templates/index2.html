@@ -9,13 +9,79 @@
   <title>Template</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
-  <script src="{% static 'library/p5.min.js' %}"></script>
-  <script src="{% static 'p5.play.js' %}"></script>
-  <script src="{% static 'createTopics.js' %}"></script>
+  <!-- <script src="{% static 'library/p5.min.js' %}"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script>
+  <!-- <script src="{% static 'p5.play.js' %}"></script> -->
+  <script src="https://cdn.jsdelivr.net/gh/molleindustria/p5.play/lib/p5.play.js"></script>
+  <script type="text/javascript">
+    var frontImages = [];
+      var backImage;
+      var x = ""
+      var frontstr = []
+
+      function preload() {
+        // img0 = "../static/img/0.png"
+        // frontImages['0'] = loadImage(img0);
+        // frontImages['1'] = loadImage("../static/img/1.png");
+        // frontImages['2'] = loadImage("../static/img/2.png");
+        // frontImages['3'] = loadImage("../static/img/3.png");
+        // frontImages['4'] = loadImage("../static/img/4.png");
+        // frontImages['5'] = loadImage("../static/img/5.png");
+        // backImage = loadImage("../static/img/backside_min.png");
+        frontImages['1'] = loadImage("{% static 'img/1.png' %}");
+        frontImages['2'] = loadImage("{% static 'img/2.png' %}");
+        frontImages['3'] = loadImage("{% static 'img/3.png' %}");
+        frontImages['4'] = loadImage("{% static 'img/4.png' %}");
+        frontImages['5'] = loadImage("{% static 'img/5.png' %}");
+        backImage = loadImage("{% static 'img/backside_min.png' %}");
+      }
+
+      function setup() {
+        createCanvas(windowWidth, windowHeight);
+        var cardTypes = ['0', '1', '2', '3', '4', '5'];
+        var card = createSprite(windowWidth / 2, windowHeight / 2 - 200);
+        card.addImage('back', backImage);
+        card.onMousePressed = function () {
+          console.log(floor(random(frontstr.length)))
+          x = frontstr[floor(random(frontstr.length))];
+          text(x, windowWidth / 2, windowHeight / 2 + 200);
+          // var card2 = createSprite(windowWidth/2, windowHeight/2+100);
+          // card2.addImage('front', frontImages[cardTypes[floor(random(6))]]);
+          // card2.changeImage('front');
+          // drawSprites();
+        }
+      }
+
+      function AddStringToTextarea() {
+        var UserString = document.getElementById('sampleUserInput').value;
+        // var user_id = "{{ user_id }}"
+        // var partner_id = "{{ partner_id }}"
+        // const url = 'http://127.0.0.1:8000/' + user_id + "/" + partner_id + "/" + "topic";
+
+        // fetch(url).then(function(response) {
+        //   console(response)
+        // }).then(function(text) {
+        //   console.log(text);
+        // });
+
+        var TargetList = document.getElementById('sampleInputedList');
+        frontstr.push(UserString);
+        console.log(frontstr.length);
+      }
+
+      function draw() {
+        background(0, 0, 80);
+        imageMode(CENTER);
+        textSize(30);
+        text(x, windowWidth / 2, windowHeight / 2 + 200);
+        drawSprites();
+      }
+
+  </script>
 </head>
 
 <body>
-  <p>{{ user_id }} {{ partner_id }}</p>
+  <!-- <p>{{ user_id }} {{ partner_id }}</p> -->
   <div id="header">
     <div id="header-container">
       <div class="logo"><img class="logo-image" src="{% static 'img/title.png' %}"></div>
@@ -23,6 +89,12 @@
   </div>
   <div class="header-right">今回のミーティングのキーワード
     <input type="text" id="sampleUserInput">
+    <!-- <img class="logo-image" src="{% static 'img/0.png' %}"></div>
+    <img class="logo-image" src="{% static 'img/1.png' %}"></div>
+    <img class="logo-image" src="{% static 'img/2.png' %}"></div>
+    <img class="logo-image" src="{% static 'img/3.png' %}"></div>
+    <img class="logo-image" src="{% static 'img/4.png' %}"></div>
+    <img class="logo-image" src="{% static 'img/5.png' %}"></div> -->
     <input type="button" value="追加" onclick="AddStringToTextarea();">
   </div>
 </body>

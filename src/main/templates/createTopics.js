@@ -3,16 +3,17 @@ var backImage;
 var x = ""
 var frontstr = []
 
-"{% load static %}"
-
 function preload() {
+  // fig1 = "{% static 'img/0.png' %}"
+  // print(fig1)
+  // frontImages['0'] = loadImage("{% static 'img/0.png' %}");
   frontImages['0'] = loadImage("{% static 'img/0.png' %}");
-  frontImages['1'] = loadImage("{% static 'img/1.png' %}");
-  frontImages['2'] = loadImage("{% static 'img/2.png' %}");
-  frontImages['3'] = loadImage("{% static 'img/3.png' %}");
-  frontImages['4'] = loadImage("{% static 'img/4.png' %}");
-  frontImages['5'] = loadImage("{% static 'img/5.png' %}");
-  backImage = loadImage('img/backside_min.png');
+  // frontImages['1'] = loadImage("img/1.png");
+  // frontImages['2'] = loadImage("img/2.png");
+  // frontImages['3'] = loadImage("img/3.png");
+  // frontImages['4'] = loadImage("img/4.png");
+  // frontImages['5'] = loadImage("img/5.png");
+  backImage = loadImage("{% static 'img/baskside_min.png' %}");
 }
 
 function setup() {
@@ -33,6 +34,16 @@ function setup() {
 
 function AddStringToTextarea() {
   var UserString = document.getElementById('sampleUserInput').value;
+  // var user_id = "{{ user_id }}"
+  // var partner_id = "{{ partner_id }}"
+  // const url = 'http://127.0.0.1:8000/' + user_id + "/" + partner_id + "/" + "topic";
+
+  // fetch(url).then(function(response) {
+  //   console(response)
+  // }).then(function(text) {
+  //   console.log(text);
+  // });
+
   var TargetList = document.getElementById('sampleInputedList');
   frontstr.push(UserString);
   console.log(frontstr.length);
