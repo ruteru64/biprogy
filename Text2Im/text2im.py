@@ -1,4 +1,6 @@
 #pip install git+https://github.com/openai/glide-text2im
+#pip uninstall googletrans
+#pip install googletrans==4.0.0-rc1
 from PIL import Image
 from IPython.display import display
 import torch as th
@@ -11,6 +13,8 @@ from glide_text2im.model_creation import (
     model_and_diffusion_defaults,
     model_and_diffusion_defaults_upsampler
 )
+from googletrans import Translator as Tr
+
 def save_images(batch: th.Tensor):
     new_path = "data"
     if not os.path.exists(new_path):
@@ -62,15 +66,17 @@ class text2im:
         print('total upsampler parameters', sum(x.numel() for x in model_up.parameters()))
         self.model_up=model_up
         self.diffusion_up=diffusion_up
+        self.tr=Tr()
 
     def generate(self,prompt,batch_size=2):
         """
-        prompt:１テキスト入力(現在は英語)
+        prompt:１テキスト入力(日本語)
 
         出力:jpgファイルへのpath２つ
         """
 
         #翻訳処理
+        prompt=self.tr.translate(text=prompt, src="ja", dest="en").text
 
         # Sampling parameters
         guidance_scale = 3.0
