@@ -252,7 +252,7 @@ def test(request, user_id, partner_id):
         if meeting.topic3:
             topics.append(meeting.topic3)
 
-        proposed_topics = ml.topics(topics)  # mlしたくないからそのまま出すように
+        # proposed_topics = ml.topics(topics)  # mlしたくないからそのまま出すように
 
         proposed_topics = {
             "data": {
