@@ -228,3 +228,8 @@ def post_topic_api(request, user_id, partner_id):
         form = MeetingForm()
 
     return False
+
+
+def test(request, user_id, partner_id):
+    print(user_id, partner_id)
+    return render(request, 'index2.html', {'user_id': user_id, 'partner_id': partner_id})

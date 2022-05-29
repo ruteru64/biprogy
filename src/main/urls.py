@@ -22,4 +22,5 @@ urlpatterns = [
          views.topic_deck_api, name='topic_deck_api'),
     path('<int:user_id>/<int:partner_id>/topic/post/api',
          views.post_topic_api, name='post_topic_api'),
+    path('<int:user_id>/<int:partner_id>/test', views.test, name='test')
 ]
