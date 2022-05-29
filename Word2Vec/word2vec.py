@@ -4,6 +4,7 @@ import torch
 import itertools
 from einops import rearrange
 import numpy as np
+import pickle
 
 class Word2Vec:
     '''
@@ -11,13 +12,23 @@ class Word2Vec:
     使う関数はtopicsです。
     '''
     def __init__(self):
+        
         self.model = gensim.models.KeyedVectors.load_word2vec_format('cc.ja.300.vec.gz', binary=False)
  
     def subject_step(self,p,n,topn):
-        lis_tup=self.model.most_similar(positive=p,negative=n,topn=topn)
         words=[]
-        for tup in lis_tup:
-          words.append(tup[0])
+        try:
+            lis_tup=self.model.most_similar(positive=p,negative=n,topn=topn)
+            for tup in lis_tup:
+                words.append(tup[0])
+        except KeyError:
+            p=list(p)
+            for i in range(len(p)):
+                if not p[i] in self.model:
+                    p[i]='趣味'
+            lis_tup=self.model.most_similar(positive=p,negative=n,topn=topn)
+            for tup in lis_tup:
+                words.append(tup[0])
         return words
 
     def subject_loop(self,p,n,topn,steps=1):
