@@ -6,12 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% load static %}
   <link rel="stylesheet" href="{% static 'style.css' %}">
-  <title>Template</title>
+  <title>オレのAIの話題提示が最強すぎる件</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
-  <!-- <script src="{% static 'library/p5.min.js' %}"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script>
-  <!-- <script src="{% static 'p5.play.js' %}"></script> -->
   <script src="https://cdn.jsdelivr.net/gh/molleindustria/p5.play/lib/p5.play.js"></script>
   <script type="text/javascript">
     var frontImages = [];
@@ -20,14 +18,6 @@
       var frontstr = []
 
       function preload() {
-        // img0 = "../static/img/0.png"
-        // frontImages['0'] = loadImage(img0);
-        // frontImages['1'] = loadImage("../static/img/1.png");
-        // frontImages['2'] = loadImage("../static/img/2.png");
-        // frontImages['3'] = loadImage("../static/img/3.png");
-        // frontImages['4'] = loadImage("../static/img/4.png");
-        // frontImages['5'] = loadImage("../static/img/5.png");
-        // backImage = loadImage("../static/img/backside_min.png");
         frontImages['1'] = loadImage("{% static 'img/1.png' %}");
         frontImages['2'] = loadImage("{% static 'img/2.png' %}");
         frontImages['3'] = loadImage("{% static 'img/3.png' %}");
