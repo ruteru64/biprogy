@@ -16,18 +16,20 @@ class Word2Vec:
         self.model = gensim.models.KeyedVectors.load_word2vec_format(
             'cc.ja.300.vec.gz', binary=False)
 
-    def subject_step(self,p,n,topn):
-        words=[]
+    def subject_step(self, p, n, topn):
+        words = []
         try:
-            lis_tup=self.model.most_similar(positive=p,negative=n,topn=topn)
+            lis_tup = self.model.most_similar(
+                positive=p, negative=n, topn=topn)
             for tup in lis_tup:
                 words.append(tup[0])
         except KeyError:
-            p=list(p)
+            p = list(p)
             for i in range(len(p)):
                 if not p[i] in self.model:
-                    p[i]='趣味'
-            lis_tup=self.model.most_similar(positive=p,negative=n,topn=topn)
+                    p[i] = '趣味'
+            lis_tup = self.model.most_similar(
+                positive=p, negative=n, topn=topn)
             for tup in lis_tup:
                 words.append(tup[0])
         return words

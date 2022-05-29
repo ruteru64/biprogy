@@ -11,6 +11,7 @@ from .word2vec import Word2Vec
 
 from .forms import UserCreateForm, LoginForm, PartnerForm, MeetingForm
 from .models import Topic, Meeting, Partner
+from main import word2vec
 
 # Create your views here.
 
@@ -51,6 +52,8 @@ create_account = Create_account.as_view()
 
 # ログイン機能
 
+ml = None
+
 
 class Account_login(View):
     def post(self, request, *arg, **kwargs):
@@ -62,6 +65,7 @@ class Account_login(View):
             login(request, user)
             request.session['user_id'] = user.id
             return redirect('/')
+            ml = Word2Vec()
         return render(request, 'login.html', {'form': form, })
 
     def get(self, request, *args, **kwargs):
@@ -234,7 +238,7 @@ def post_topic_api(request, user_id, partner_id):
 def test(request, user_id, partner_id):
     # print(user_id, partner_id)
     meeting = Meeting.objects.filter(
-        partner_id=partner_id).order_by('-day').first()  # 指定営業先に該当するMeetingのデータを抽出
+        partner_id=partner_id).order_by('-day').first()  # 指定営業先に該当するMeetingのデータを抽
 
     if meeting:
 
@@ -248,7 +252,7 @@ def test(request, user_id, partner_id):
         if meeting.topic3:
             topics.append(meeting.topic3)
 
-        # proposed_topics = topics  # mlしたくないからそのまま出すように
+        proposed_topics = ml.topics(topics)  # mlしたくないからそのまま出すように
 
         proposed_topics = {
             "data": {
