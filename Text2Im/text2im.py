@@ -65,7 +65,7 @@ class text2im:
 
     def generate(self,prompt,batch_size=2):
         """
-        prompt:テキスト入力(現在は英語)
+        prompt:１テキスト入力(現在は英語)
 
         出力:jpgファイルへのpath２つ
         """
