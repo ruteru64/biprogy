@@ -42,8 +42,25 @@
         var card = createSprite(windowWidth / 2, windowHeight / 2 - 200);
         card.addImage('back', backImage);
         card.onMousePressed = function () {
-          console.log(floor(random(frontstr.length)))
-          x = frontstr[floor(random(frontstr.length))];
+            var user_id = "{{ user_id }}"
+            var partner_id = "{{ partner_id }}"
+            var proposed_topics = JSON.parse('{{ proposed_topics|safe }}');
+            // console.log("ああああああああああああああああ")
+            // console.log(proposed_topics.data.topics.length)
+            // console.log(floor(random(proposed_topics.data.topics.length)))
+            // const url = 'http://127.0.0.1:8000/' + user_id + "/" + partner_id + "/" + "topic";
+          x = proposed_topics.data.topics[floor(random(proposed_topics.data.topics.length))]
+          // console.log(random(10))
+          // for(topic : proposed_topics){
+          //   console.log(proposed_topics)
+          // }
+        //var proposed_topic = JSON.parse("{{proposed_topics | safe}}");
+
+          // console.log(proposed_topics)
+
+          // for(let step = 0; step < 3; step++){
+          //   console.log(proposed_topics[step])
+          // }
           text(x, windowWidth / 2, windowHeight / 2 + 200);
           // var card2 = createSprite(windowWidth/2, windowHeight/2+100);
           // card2.addImage('front', frontImages[cardTypes[floor(random(6))]]);
@@ -54,9 +71,6 @@
 
       function AddStringToTextarea() {
         var UserString = document.getElementById('sampleUserInput').value;
-        // var user_id = "{{ user_id }}"
-        // var partner_id = "{{ partner_id }}"
-        // const url = 'http://127.0.0.1:8000/' + user_id + "/" + partner_id + "/" + "topic";
 
         // fetch(url).then(function(response) {
         //   console(response)
@@ -87,16 +101,18 @@
       <div class="logo"><img class="logo-image" src="{% static 'img/title.png' %}"></div>
     </div>
   </div>
-  <div class="header-right">今回のミーティングのキーワード
-    <input type="text" id="sampleUserInput">
+
+  <a href="{% url 'post_topic' user_id=user.id partner_id=partner_id %}">話題追加</a>
+  <!-- <div class="header-right">今回のミーティングのキーワード
+    <input type="text" id="sampleUserInput"> -->
     <!-- <img class="logo-image" src="{% static 'img/0.png' %}"></div>
     <img class="logo-image" src="{% static 'img/1.png' %}"></div>
     <img class="logo-image" src="{% static 'img/2.png' %}"></div>
     <img class="logo-image" src="{% static 'img/3.png' %}"></div>
     <img class="logo-image" src="{% static 'img/4.png' %}"></div>
     <img class="logo-image" src="{% static 'img/5.png' %}"></div> -->
-    <input type="button" value="追加" onclick="AddStringToTextarea();">
-  </div>
+    <!-- <input type="button" value="追加" onclick="AddStringToTextarea();">
+  </div> -->
 </body>
 
 </html>
