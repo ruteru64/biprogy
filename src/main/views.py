@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import CreateView, TemplateView
 from django.views import View
-
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 from .word2vec import Word2Vec
 
@@ -99,17 +99,63 @@ def topic_deck(request, user_id, partner_id):
         topics = []
 
         topics.append(meeting.topic1)
-        topics.append(meeting.topic2)
-        topics.append(meeting.topic3)
+
+        if meeting.topic2:
+            topics.append(meeting.topic2)
+
+        if meeting.topic3:
+            topics.append(meeting.topic3)
 
         proposed_topics = topics  # mlしたくないからそのまま出すように
 
         # proposed_topics = word2vec.topics(topics) # 抽出したtopicを機械学習にかけて，提案された話題リスト
 
-        return render(request, 'topic_deck.html', {'proposed_topics': proposed_topics, "user_id": user_id, "partner_id": partner_id})
+        user = User.objects.get(id=user_id)
+
+        form = LoginForm(user_id, user.password)
+
+        return render(request, 'topic_deck.html', {'proposed_topics': proposed_topics, "user_id": user_id, "partner_id": partner_id, "form": form})
     else:
         return render(request, 'topic_deck.html', {"user_id": user_id, "partner_id": partner_id})
         # ミーティングで出た話題が入力されたものをデータベースに登録するview partner_idが必要
+
+
+def topic_deck_api(request, user_id, partner_id):
+    meeting = Meeting.objects.filter(
+        partner_id=partner_id).order_by('-day').first()  # 指定営業先に該当するMeetingのデータを抽出
+
+    if meeting:
+
+        topics = []
+
+        topics.append(meeting.topic1)
+
+        if meeting.topic2:
+            topics.append(meeting.topic2)
+
+        if meeting.topic3:
+            topics.append(meeting.topic3)
+
+        proposed_topics = {
+            "meta": {
+                "user_id": user_id,
+                "partner_id": partner_id
+            },
+            "data": {
+                "topics": topics
+            }
+        }
+
+        # proposed_topics = word2vec.topics(topics) # 抽出したtopicを機械学習にかけて，提案された話題リスト
+
+        return JsonResponse(proposed_topics)
+    else:
+        return JsonResponse({
+            "meta": {
+                "user_id": user_id,
+                "partner_id": partner_id
+            }
+        })
 
 
 def post_topic(request, user_id, partner_id):
@@ -146,3 +192,39 @@ def post_topic(request, user_id, partner_id):
         form = MeetingForm()
 
     return render(request, 'post_topic.html', {'form': form})
+
+
+def post_topic_api(request, user_id, partner_id):
+
+    if request.method == "POST":  # POSTrequestなら
+        form = MeetingForm(request.POST)  # formの内容
+
+        if form.is_valid():  # 記入内容が正常なら
+            # meetingを登録
+            meeting = form.save(commit=False)
+            meeting.partner_id = partner_id
+            meeting.day = timezone.now()
+            meeting.save()
+
+            # print(meeting.id)
+
+            # Topicを登録
+            topic1 = meeting.topic1
+            Topic.objects.create(
+                meeting_id=meeting.id, partner_id=partner_id, topic=topic1)
+
+            topic2 = meeting.topic2
+            if topic2:
+                Topic.objects.create(
+                    meeting_id=meeting.id, partner_id=partner_id, topic=topic2)
+
+            topic3 = meeting.topic3
+            if topic3:
+                Topic.objects.create(
+                    meeting_id=meeting.id, partner_id=partner_id, topic=topic3)
+
+            return redirect('topic_deck_api', user_id=user_id, partner_id=partner_id)
+    else:
+        form = MeetingForm()
+
+    return False

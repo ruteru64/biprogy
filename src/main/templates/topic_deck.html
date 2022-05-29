@@ -1,17 +1,23 @@
-<html>
+<html lang="ja">
 
 <body>
     <p>話題一覧</p>
     {% if proposed_topics %}
         {% for topic in proposed_topics %}
-        <div>
-            <p>{{ topic }}</p>
-        </div>
+            {% if topic %}
+            <div>
+                <p>{{ topic }}</p>
+            </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 
 
     <a href="{% url 'post_topic' user_id=user.id partner_id=partner_id %}">話題追加</a>
+    <!-- <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <button type="submit">戻る</button>
+    </form> -->
 </body>
 
 </html>
