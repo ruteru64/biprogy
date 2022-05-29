@@ -3,13 +3,15 @@ var backImage;
 var x = ""
 var frontstr = []
 
+"{% load static %}"
+
 function preload() {
-  frontImages['0'] = loadImage('img/0.png');
-  frontImages['1'] = loadImage('img/1.png');
-  frontImages['2'] = loadImage('img/2.png');
-  frontImages['3'] = loadImage('img/3.png');
-  frontImages['4'] = loadImage('img/4.png');
-  frontImages['5'] = loadImage('img/5.png');
+  frontImages['0'] = loadImage("{% static 'img/0.png' %}");
+  frontImages['1'] = loadImage("{% static 'img/1.png' %}");
+  frontImages['2'] = loadImage("{% static 'img/2.png' %}");
+  frontImages['3'] = loadImage("{% static 'img/3.png' %}");
+  frontImages['4'] = loadImage("{% static 'img/4.png' %}");
+  frontImages['5'] = loadImage("{% static 'img/5.png' %}");
   backImage = loadImage('img/backside_min.png');
 }
 

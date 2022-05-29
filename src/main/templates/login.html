@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <title>オレのAIの話題提示が最強すぎる件</title>
+</head>
+
+
+  <div id="header">
+    <div id="header-container">
+      <a href="#"><div class="logo"><img class="logo-image" src="{% static 'img/title.png' %}"></div></a>
+    </div>
+  </div>
   <body>
+  <div class="leftnav">
+  </div>
+  <div class="mainarea">
     {% if form.errors  %}
     <p>名前, パスワードが一致しません．</p>
     {% endif %}
@@ -14,5 +32,13 @@
       {{ form.password.errors }}
       <button type = "submit">ログイン</button>
     </form>
+  </div>
+  <div class="rightnav">
+  </div>
+  <div id="footer">
+    <img class="logo-image" src="{% static 'img/title.png' %}"><br>
+    Copyright©2022 Intelligent Create Topics Inc. All Rights Reserved
+  </div>
   </body>
-</html>
+
+  </html>

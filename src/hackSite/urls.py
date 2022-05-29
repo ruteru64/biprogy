@@ -22,5 +22,5 @@ load_dotenv()
 
 urlpatterns = [
     path(os.getenv('ADMIN_URL'), admin.site.urls),
-    path('',include('main.urls')),
+    path('', include('main.urls')),
 ]
